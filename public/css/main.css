@@ -1,0 +1,291 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+body {
+  background: #ececef;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  display: inline-block;
+}
+#container {
+  position: relative;
+  padding: 10px;
+}
+.navbar {
+  margin: 0;
+}
+.box-error {
+  background: #f00;
+}
+.box-info {
+  background: #8af;
+}
+.box {
+  white-space: pre;
+  display: none;
+  position: fixed;
+  z-index: 9000;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+.icon-x-large {
+  font-size: 3.0em;
+}
+.icon-large {
+  font-size: 2.0em;
+}
+.icon-med {
+  font-size: 1.5em;
+}
+.icon-small {
+  font-size: 0.8em;
+}
+.margin-h-10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.margin-h-20 {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.margin-h-30 {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.shadow-lite {
+  text-shadow: #fff 1px 1px 1px;
+}
+.shadow-dark {
+  text-shadow: #222 1px 1px 1px;
+}
+.shadowy {
+  text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+}
+.hidden {
+  display: none !important;
+}
+.init-hidden {
+  display: none !important;
+}
+.digits-1 {
+  width: 1em !important;
+}
+.digits-2 {
+  width: 2em !important;
+}
+.digits-3 {
+  width: 3em !important;
+}
+.digits-4 {
+  width: 4em !important;
+}
+.digits-5 {
+  width: 5em !important;
+}
+.spacer-1 {
+  margin-left: 1em;
+}
+.spacer-2 {
+  margin-left: 2em;
+}
+.spacer-3 {
+  margin-left: 3em;
+}
+.spacer-4 {
+  margin-left: 4em;
+}
+.spacer-5 {
+  margin-left: 5em;
+}
+.padded-1 {
+  padding: 1px;
+}
+.padded-2 {
+  padding: 3px;
+}
+.padded-3 {
+  padding: 5px;
+}
+.padded-4 {
+  padding: 7px;
+}
+.padded-5 {
+  padding: 9px;
+}
+.margin-top-1 {
+  margin-top: 1px;
+}
+.margin-top-2 {
+  margin-top: 3px;
+}
+.margin-top-3 {
+  margin-top: 5px;
+}
+.margin-top-4 {
+  margin-top: 7px;
+}
+.margin-top-5 {
+  margin-top: 9px;
+}
+.v-align-mid-kids > * {
+  vertical-align: middle;
+}
+.v-align-top-kids > * {
+  vertical-align: top;
+}
+.v-align-top {
+  vertical-align: top;
+}
+.v-align-mid {
+  vertical-align: middle;
+}
+.v-align-bottom {
+  vertical-align: bottom;
+}
+.inline-block {
+  display: inline-block;
+}
+.top-right {
+  position: absolute;
+  display: inline-block;
+  top: 0px;
+  right: 0px;
+  left: auto;
+  width: auto;
+}
+.border {
+  outline: 2px #000;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+.blue {
+  color: blue;
+}
+.menu {
+  display: inline-block;
+  color: #fff;
+  font-size: 110%;
+  text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+}
+.menu i {
+  display: inline-block;
+  background: #222;
+}
+.menu i div {
+  z-index: 9999;
+  position: absolute;
+  display: block;
+  display: none !important;
+}
+.menu i div i {
+  display: block;
+}
+.menu span {
+  display: inline-block;
+  padding: 15px;
+  position: relative;
+  cursor: pointer;
+}
+.menu span:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.pointer {
+  cursor: pointer;
+}
+.git-info {
+  position: fixed;
+  display: inline-block;
+  bottom: 2px;
+  right: 2px;
+  padding: 6px;
+  font-size: 10px;
+  border-radius: 10px;
+  background-color: #888;
+}
+.git-info a {
+  color: #ccc;
+  text-shadow: #222 1px 1px 1px;
+}
+.git-info .git-date {
+  color: #fc8;
+}
+.git-info .git-hash {
+  color: #8cf;
+}
+.git-info .server-restart {
+  color: #f00;
+  font-weight: bold;
+  font-size: 120%;
+  text-shadow: 1px 0 2px #000, -1px 0 2px #000, 0 1px 2px #000, 0 -1px 2px #000;
+}
+.modal {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal.showing {
+  display: block;
+}
+.popup {
+  position: absolute;
+  display: inline-block;
+  left: 50px;
+  right: 50px;
+  top: 40%;
+  box-shadow: 0px 2px 32px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 9px;
+  border-radius: 10px;
+}
+.popup .header {
+  display: block;
+  text-align: center;
+  text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+}
+.popup .content {
+  padding-bottom: 40px;
+}
+.popup .message {
+  text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+  margin-bottom: 10px;
+  display: inline-block;
+  color: #888;
+}
+.popup .checkbox input,
+.popup .checkbox div {
+  display: inline-block;
+}
+.popup .buttons {
+  display: block;
+  position: absolute;
+  bottom: 5px;
+}

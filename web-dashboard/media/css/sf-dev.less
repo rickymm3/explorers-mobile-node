@@ -1,0 +1,238 @@
+@import '../../../public/css/main';
+
+body {
+  background: #557f86;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+h1 { font-size: 180%; font-weight: bold; }
+h2 { font-size: 140%; font-weight: bold; }
+h3 { font-size: 125%; font-weight: bold; }
+h4 { font-size: 112%; font-weight: bold; }
+
+html, body, #app {
+  width: 100%;
+  height: 100%;
+}
+
+.gradientButton(@a, @b, @c) {
+  background: linear-gradient(@a, @b, @c);
+
+  &:hover {
+    color: #fff;
+    background: linear-gradient(@a * 1.2, @b * 1.2, @c * 1.2);
+  }
+}
+
+hr {
+  border: dotted 1px #848484;
+}
+
+//////////////////////////////////////////////////////////
+
+.btn {
+  border-radius: 6px;
+  padding: 5px 8px;
+  margin: 2px;
+  border: none;
+  box-shadow: 0px 1px 1px #000;
+  color: #fff;
+
+  .shadow-dark();
+
+  .gradientButton(#b8dda1, #67d747, #398418);
+
+  &.bg-red, &.is-off {
+    .gradientButton(#ddb0a9, #d74c4d, #84080d);
+  }
+}
+
+//////////////////////////////////////////////////////////
+
+#app {
+  position: relative;
+  background:
+          linear-gradient(rgba(255, 255, 255, 1),
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.90),
+          rgba(255, 255, 255, 0.02));
+}
+
+.menubar {
+  background: #888;
+  padding: 5px;
+  .shadow-lite();
+}
+
+.section {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  //height: 100%;
+}
+
+.vbox, .hbox {
+  //border: dotted 1px rgba(255, 0, 0, 0.5);
+  position: relative;
+  display: table;
+  border-collapse: separate;
+
+  .inline-block {
+    > .vbox-child, > .hbox-child {
+      display: inline-block;
+    }
+  }
+}
+
+.vbox {
+  height: 100%;
+
+  > .vbox-child { padding: 5px 2px; display: table-row; }
+}
+
+.hbox {
+  width: 100%;
+
+  > .hbox-child { padding: 2px 5px; vertical-align: middle; display: table-cell; }
+}
+
+.no-edit {
+  color: #999;
+  font-style: italic;
+}
+
+
+.bottom-area {
+  padding: 10px;
+  display: inline-block;
+  > .child {vertical-align: top;}
+}
+
+.cron-jobs {
+  width: 230px;
+  border: solid 3px #20878d;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 80vh;
+  vertical-align: top;
+  display: inline-block;
+
+  .child {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .btn {
+
+    .job-name {
+      display: inline-block;
+      width: 100%;
+      text-align: left;
+    }
+
+    .job-active {
+      margin-left: -40px;
+      text-align: right;
+      &:hover {
+        .shadow-lite()
+      }
+    }
+
+    .is-on { color: #64ff5f; }
+    .is-off { color: #900; }
+
+    width: 100%;
+    .gradientButton(#a8b6dd, #569fd7, #134184);
+  }
+
+  .selected {
+    .gradientButton(#dee3ed, #abbdd7, #a1b8d1);
+  }
+}
+
+.basic-details {
+  .first > .child:first-child {
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .preview-icon {
+    background: #fff;
+    border: solid 2px #000;
+    min-height: 100px;
+    min-width: 100px;
+  }
+
+  .gallery {
+    .gradientButton(#a0ddc5, #25d7c0, #066156);
+  }
+
+  .jobItems {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 200px;
+  }
+
+  .jobtypes div {
+    vertical-align: top;
+  }
+}
+
+textarea.wide {
+  width: 400px;
+  height: 100px;
+}
+
+#publish-led {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  //border-radius: 10px;
+  font-size: 180%;
+  vertical-align: -28%;
+
+  i {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    top: 3px;
+    position: absolute;
+    transform-origin: 50% 42%;
+  }
+
+  .fa { transform: scale(0.5)}
+  .fa { transform: scale(0.5)}
+}
+
+.is-published { color: #9f0; }
+
+.toggle-off {
+  .gradientButton(#ddb0a9, #d74c4d, #84080d);
+}
+
+.big-button {
+  min-width: 120px;
+  padding: 10px;
+}
+
+.disabled {
+  background: #444;
+  color: #888;
+}
+
+.small-text {
+  font-size: 70%;
+}
+
+.columns-2 {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}

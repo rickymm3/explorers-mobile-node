@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SF-DEV Web Dashboard</title>
+  <meta name="viewport" content="width=600, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+
+  <link rel="icon" href="data:;base64,=">
+  <link rel="stylesheet" href="public/css/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.css">
+  <link rel="stylesheet" href="https://afeld.github.io/emoji-css/emoji.css">
+  <link rel="stylesheet" hot-reload=1 href="public/css/main.css">
+  <link rel="stylesheet" hot-reload=1 href="media/css/sf-dev.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/eventemitter3/2.0.3/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.7/bluebird.core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.7/bluebird.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/EaselJS/0.8.0/easeljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.1/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+  <script src="public/js/jquery-cookie.js"></script>
+  <script src="public/js/sortable.js"></script>
+  <script src="public/js/vue-draggable.js"></script>
+  <script src="public/js/spinner.js"></script>
+  <script src="public/js/extensions.js"></script>
+
+  <script> var $$$ = new EventEmitter(); </script>
+</head>
+<body>
+
+<!------------------------------------------------>
+
+<div id="app">
+    <menubar>
+        <h1>SF-DEV</h1>
+    </menubar>
+
+  <section class="section msg-center">
+    <vbox>
+      <hbox class="top-area top-buttons inline-block">
+          <h1>Message Center</h1>
+          <btn class="big-button" icon="clock-o" @click="onJobAdd">Add Scheduled Job</btn>
+          <btn class="big-button" icon="envelope-o no-edit" @click="onSendDM">Send Direct Message</btn>
+          <i id="spinner" class="fa fa-3x fa-circle-o-notch"></i>
+      </hbox>
+
+      <hbox class="bottom-area init-hidden">
+        <vbox class="cron-jobs">
+            <h2>Scheduled Jobs List</h2>
+            <div v-if="!cronJobs.length">
+                <i>No Jobs to list.</i>
+            </div>
+            <div v-else>
+                <btn v-for="(job, j) in cronJobs" :key="job.id" @click="onJobSelected(job)" :class="getJobClasses(job)">
+                    <i class="job-name">{{job.name}}</i>
+                    <i :class="'job-active fa fa-' + getToggleIcon('isActive', job)" @click="onToggle('isActive', job)"></i>
+                </btn>
+            </div>
+        </vbox>
+
+        <!-------------------------------- BASIC-DETAILS, etc. -->
+
+        <vbox class="basic-details">
+
+            <div v-if="currentJob">
+                <hbox class="first inline-block">
+                    <h2>Basic Details</h2>
+                    <btn class="big-button" icon="floppy-o" @click="onSave()">Save</btn>
+                    <btn class="big-button bg-red" icon="trash-o" @click="onDelete()" class="bg-red">Delete</btn>
+                    <btn class="big-button" :class="getToggleIcon('isActive')" @click="onToggle('isActive')">Active: {{currentJob.isActive ? 'ON' : 'OFF'}}</btn>
+                </hbox>
+
+                <hbox class="first inline-block">
+                    <i>Name:</i>
+                    <input id="jobCronName" v-model="currentJob.name">
+                </hbox>
+
+                <hbox class="first">
+                  <i>ID:</i>
+                  <i class="no-edit">{{currentJob.id}}</i>
+                </hbox>
+
+                <hbox class="first inline-block">
+                  <i># Published:</i>
+                  <i class="no-edit">
+                      <i id="publish-led">
+                          <i class="fa fa-circle-o"></i>
+                          <i class="fa fa-circle"></i>
+                      </i>
+                      {{currentJob.published.numTotal}} times,
+                      {{currentJob.published.dateLast ? 'Last Published on ' + getPublishedDate() : 'Never published yet.'}}
+                  </i>
+                </hbox>
+
+                <hbox class="first inline-block">
+                    <i>Schedule:</i>
+                    <input id="jobSchedule" v-model="currentJob.schedule">
+                    <btn icon="calendar" class="no-edit">Edit</btn>
+                </hbox>
+
+                <hbox class="first inline-block">
+                    <i>Message Expires in:</i>
+                    <input id="jobExpiresIn" v-model="currentJob.dateExpiresIn">
+                </hbox>
+
+                <hbox class="first">
+                  <i>Title:</i>
+                  <input id="jobTitle" v-model="currentJob.title">
+                </hbox>
+
+                <hbox class="first">
+                  <i>Message:</i>
+                  <textarea id="jobMessage" class="wide" v-model="currentJob.message"></textarea>
+                </hbox>
+
+                <hbox class="first image-setup inline-block">
+                  <i>Image / Icon:</i>
+                  <vbox>
+                    <btn icon="cloud-upload" class="big-button no-edit">Upload</btn>
+                    <btn icon="file-image-o" class="big-button no-edit gallery">Gallery</btn>
+                  </vbox>
+                  <img class="preview-icon" src="media/images/sword.png" width="100px" />
+
+                </hbox>
+
+                <hbox class="first jobtypes">
+                  <i>Type:</i>
+                    <vbox>
+                        <label class="inline-block" v-for="type in jobTypes">
+                            <input type="radio" v-model="currentJob.type" :value="type">
+                            {{type}}
+                        </label>
+                    </vbox>
+                </hbox>
+
+                <hr /> <!------------ ----------->
+
+                <hbox class="v-align-top-kids" v-if="googleData && currentJob.type">
+                  <vbox class="v-align-top">
+                      <h2>{{currentJob.type}}</h2>
+                      <textarea class="jobItems" v-model="currentJob.reward.item"></textarea>
+                  </vbox>
+                    <vbox class="examples v-align-top">
+
+                        <!-- LOOTCRATES SYNTAX HELPER -->
+                        <div v-show="currentJob.type == jobTypes[1]">
+                            <h2>Syntax Helper for LootCrates:</h2>
+
+                            <hbox class="first v-align-top-kids">
+                                <i>LootTable Identity:</i>
+                                <vbox>
+                                    <hbox>
+                                        <label>
+                                            <input type="checkbox" v-model="helper.isFilterByPrefix">
+                                            Filter by:
+                                        </label>
+                                        <input type="text" v-model="helper.filterByPrefix">
+                                    </hbox>
+
+                                    <select class="padded-3" style="width: 200px" v-model="helper.lootCrate.lootTableIdentity">
+                                        <option disabled>Select one...</option>
+                                        <option v-for="key in validLootTables" :value="key">{{key}}</option>
+                                    </select>
+                                </vbox>
+                            </hbox>
+
+                            <hbox class="first">
+                                <i>Crate Type Identity:</i>
+                                <select class="padded-3" style="width: 200px" v-model="helper.lootCrate.crateTypeIdentity">
+                                    <option disabled>Select one...</option>
+                                    <option v-for="key in googleData.crateTypes">{{key}}</option>
+                                </select>
+                            </hbox>
+
+                            <hbox class="first">
+                                <i>Item Level:</i>
+                                <input v-model="helper.lootCrate.itemLevel" size="2">
+                            </hbox>
+
+                            <hbox class="first">
+                                <i>Variance:</i>
+                                <input v-model="helper.lootCrate.variance" size="2">
+                            </hbox>
+
+                            <hbox class="first">
+                                <i>Magic Find:</i>
+                                <input v-model="helper.lootCrate.magicFind" size="2">
+                            </hbox>
+
+                            <hbox>
+                                <vbox>
+                                    <i>LootTable Info:</i>
+                                    <pre class="disabled small-text" v-html="lootTableIdentityInfo"></pre>
+                                </vbox>
+
+                                <vbox>
+                                    <i>Crate Type Info:</i>
+                                    <pre class="disabled small-text" v-html="crateTypeIdentityInfo"></pre>
+                                </vbox>
+                            </hbox>
+
+
+                            <btn icon="arrow-left" class="big-button" @click="onHelperUseLootCrate()">&nbsp;&nbsp;Use</btn>
+                        </div>
+
+                        <!-- CURRENCY SYNTAX HELPER -->
+                        <div v-show="currentJob.type == jobTypes[2]">
+                            <h2>Syntax Helper for Currency:</h2>
+
+                            <hbox class="first">
+                                <i>Currency Category:</i>
+                                <vbox style="line-height: 50%;">
+                                    <label class="inline-block" v-for="category in helper.currencyCategories">
+                                        <input type="radio" v-model="helper.currencyCategory" :value="category" @change="onCurrencyCategoryChange">
+                                        {{category}}
+                                    </label>
+                                </vbox>
+                            </hbox>
+                            <hbox class="first">
+                                <i>{{helper.currencyCategory.titleCase()}} Type:</i>
+                                <select class="padded-3" style="width: 300px" v-model="helper.currency.type">
+                                    <option disabled>Select one...</option>
+                                    <option v-for="key in categoryCurrencyList">{{key}}</option>
+                                </select>
+                            </hbox>
+
+                            <hbox class="first">
+                                <i>Amount:</i>
+                                <input v-model="helper.currency.amount" size="2">
+                            </hbox>
+
+                            <btn icon="arrow-left" class="big-button" @click="onHelperUseCurrency()">&nbsp;&nbsp;Use</btn>
+                        </div>
+                    </vbox>
+                </hbox>
+            </div>
+
+          <div v-else>
+            Select an existing Job (left-pane), or Add a new Scheduled Job.
+          </div>
+
+        </vbox>
+      </hbox>
+    </vbox>
+  </section>
+</div>
+
+<!------------------------------------------------>
+
+<script src="dist/bundle.js"></script>
+
+</body>
+</html>

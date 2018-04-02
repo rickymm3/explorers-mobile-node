@@ -1,0 +1,1 @@
+start "SF-DEV localhost" "cmd /K npm start"
