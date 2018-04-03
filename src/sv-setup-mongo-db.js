@@ -25,8 +25,13 @@ function mongoSetup() {
 		const mongoURL = `mongodb://${CONFIG.USER}:${CONFIG.PASS}@localhost:${CONFIG.PORT}/${CONFIG.DB}?authSource=${CONFIG.DB_ADMIN}`;
 		const conn = mongoose.connect(mongoURL, mongoConfig);
 		const db = mongoose.connection.db;
-		conn.then(resolve).catch(reject);
-
+		conn
+			.then(resolve)
+			.catch(err => {
+				trace("Failed to connect MongoDB with mongoURL:\n" + mongoURL);
+				reject(err);
+			});
+		
 		//Alias:
 		db.getCollectionNames = db.listCollections;
 
