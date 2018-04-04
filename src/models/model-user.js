@@ -637,6 +637,10 @@ module.exports = function() {
 					relicsShield: CustomTypes.LargeInt(),
 					relicsStaff: CustomTypes.LargeInt(),
 					relicsBow: CustomTypes.LargeInt(),
+
+					xpFragment: CustomTypes.LargeInt(),
+					xpFragmentPlus: CustomTypes.LargeInt(),
+
 				},
 
 				shopInfo: {
