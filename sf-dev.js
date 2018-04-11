@@ -2,6 +2,8 @@ const trace = console.log.bind(console);
 const cluster = require('cluster');
 var args = [].slice.call(process.argv, 2);
 
+//Test comment
+
 function autoReload() {
 	var persistent;
 
