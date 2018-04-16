@@ -20,6 +20,11 @@ describe('=REST= Boosts', () => {
 		checkBoostCurrency(data.currency, 0);
 	});
 
+	TEST.OK('put::/currency', 'Add some gold', {body: {gold:1000}}, data => {
+		assert.exists(data.gold, 'Currency exists');
+		goldNow = data.gold;
+	});
+
 	TEST.OK('put::/boosts/currency', 'Add boost currency (1 each)', {body: {boost_gold:1, boost_xp:1, boost_health:1, boost_magicfind:1}}, data => {
 		checkBoostCurrency(data.currency, 1);
 	});

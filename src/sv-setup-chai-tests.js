@@ -25,7 +25,7 @@ module.exports = function start(onFinishTests) {
 		trace("Running Tests on api: ".green + $$$.paths.__api);
 
 		tests.sort();
-		trace(tests);
+		trace(tests.map(f => f.split('/').pop()));
 
 		tests.forEach(file => mocha.addFile(file));
 
