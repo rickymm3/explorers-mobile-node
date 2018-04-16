@@ -24,16 +24,10 @@ module.exports = function start(onFinishTests) {
 		// Run the tests.
 		trace("Running Tests on api: ".green + $$$.paths.__api);
 
-		//tests.sort();
-		trace(tests);
 		tests.sort();
-		trace("After sort....".red);
 		trace(tests);
-
-		return;
 
 		tests.forEach(file => mocha.addFile(file));
-		//mocha.addFile(file);
 
 		mocha.run(function (failures) {
 			onFinishTests && onFinishTests();
