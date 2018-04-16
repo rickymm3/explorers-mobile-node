@@ -11,6 +11,7 @@ const MANDATORY_FIELDS = ['_id', 'id'];
 const ERROR_MAXLENGTH = '`{PATH}` field must be {MAXLENGTH} chars, you used {VALUE}.';
 const PRIVATE_PROP = /^_/;
 const CONFIG = $$$.env.ini;
+const Schema = mongoose.Schema;
 
 
 mongoose.Promise = global.Promise;
@@ -35,7 +36,7 @@ const mgHelpers = {
 
 	plugins: {
 		autoIncrement,
-		beautifulUnique
+		beautifulUnique,
 	},
 
 	createModel(schemaFile, name) {
@@ -48,7 +49,9 @@ const mgHelpers = {
 		trace("Creating model: ".yellow + name);
 
 		const schemaDef = schemaReq(mongoose);
-		const schema = new mongoose.Schema(schemaDef.schema);
+		const schema = new Schema(schemaDef.schema, {
+			usePushEach: true
+		});
 
 		this.applyPlugins(schema, name);
 
