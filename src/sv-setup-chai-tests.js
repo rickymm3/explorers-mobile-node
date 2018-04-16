@@ -10,9 +10,10 @@ const regexTestFiles = new RegExp(CONFIG.TEST_FILE_PATTERN || '^test', 'i');
 const mocha = new Mocha({bail:1}); //
 
 module.exports = function start(onFinishTests) {
+	const tests = [];
 	function addTest(file, name) {
 		if(!regexTestFiles.test(name)) return;
-		mocha.addFile(file);
+		tests.push(file);
 	}
 
 	//Find and add all the tests JS files found in the /tests/ sub-folder:
@@ -21,7 +22,18 @@ module.exports = function start(onFinishTests) {
 	//Once tests are added, run the tests!
 	function runTests() {
 		// Run the tests.
-		trace(" ................ Running Tests on api: ".green + $$$.paths.__api.green);
+		trace("Running Tests on api: ".green + $$$.paths.__api);
+
+		//tests.sort();
+		trace(tests);
+		tests.sort();
+		trace("After sort....".red);
+		trace(tests);
+
+		return;
+
+		tests.forEach(file => mocha.addFile(file));
+		//mocha.addFile(file);
 
 		mocha.run(function (failures) {
 			onFinishTests && onFinishTests();
